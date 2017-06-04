@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- *
+ * Custom filter
  *
  * @author m.mazigh
  */

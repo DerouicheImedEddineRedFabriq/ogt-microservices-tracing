@@ -1,25 +1,23 @@
 package exception;
 
 /**
- *
+ * A custom exception.
  *
  * @author m.mazigh
  */
-public class MyException extends Exception{
+public class MyException extends Exception {
     /**
      * Creates a new {@code MyException}.
      */
-    public MyException()
-    {
+    public MyException() {
     }
 
     /**
-     * Creates a new {@code MyException}.
+     * Creates a new {@link MyException}.
      *
      * @param message the message.
      */
-    public MyException(String message)
-    {
+    public MyException(String message) {
         super(message);
     }
 
@@ -27,10 +25,9 @@ public class MyException extends Exception{
      * Creates a new {@code MyException}.
      *
      * @param message the message.
-     * @param cause the envelopped exception.
+     * @param cause   the envelopped exception.
      */
-    public MyException(String message, Throwable cause)
-    {
+    public MyException(String message, Throwable cause) {
         super(message, cause);
     }
 }

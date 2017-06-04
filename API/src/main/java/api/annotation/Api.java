@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * All micro-service entry points must have the Api annotation.
  *
- *@author m.mazigh.
+ * @author m.mazigh.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

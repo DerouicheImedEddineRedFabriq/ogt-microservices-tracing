@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Random;
 
-// notice there is no tracing code in this class
 @RestController
 @EnableWebMvc
 @Configuration
@@ -47,18 +46,10 @@ public class ControllerB {
         Random random = new Random();
         Thread.sleep(random.nextInt(1000));
 
-        LOGGER.info("dans ControllerB");
+        LOGGER.info("Get b...");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Person> request = new HttpEntity<>(new Person("Mazigh", "Belhassen"), headers);
-//        ResponseEntity<Person> exchange =
-//                this.template.exchange(
-//                        url + "/upper",
-//                        HttpMethod.POST,
-//                        request,
-//                        Person.class);
-////    System.out.println(exchange.getBody());
-
         Person p = template.postForObject(url + "/upper", request, Person.class);
         LOGGER.info(p.toString());
         return p.toString();

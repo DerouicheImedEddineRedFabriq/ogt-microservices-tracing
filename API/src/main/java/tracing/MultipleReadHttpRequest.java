@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
 /**
- * Created by m.mazigh on 30/03/2017.
+ * Custom ServletRequest
+ *
+ * @author m.mazigh
  */
 public class MultipleReadHttpRequest extends HttpServletRequestWrapper {
     private ByteArrayOutputStream cachedBytes;
@@ -26,24 +28,19 @@ public class MultipleReadHttpRequest extends HttpServletRequestWrapper {
     }
 
     @Override
-    public BufferedReader getReader() throws IOException{
+    public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
     private void cacheInputStream() throws IOException {
-        /* Cache the inputstream in order to read it multiple times. For
-         * convenience, I use apache.commons IOUtils
-         */
         cachedBytes = new ByteArrayOutputStream();
         IOUtils.copy(super.getInputStream(), cachedBytes);
     }
 
-    /* An inputstream which reads the cached request body */
     public class CachedServletInputStream extends ServletInputStream {
         private ByteArrayInputStream input;
 
         public CachedServletInputStream() {
-            /* create a new input stream from the cached request body */
             input = new ByteArrayInputStream(cachedBytes.toByteArray());
         }
 

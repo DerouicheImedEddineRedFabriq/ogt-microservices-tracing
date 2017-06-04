@@ -20,40 +20,33 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExceptionHandlingController extends ResponseEntityExceptionHandler {
 
     /**
+     * Return a ResponseEntity.
      *
-     * @param exception
-     * @return
+     * @param exception my exception.
+     * @return a ResponseEntity
      */
     @ExceptionHandler(MyException.class)
     public ResponseEntity<MyError> handleMyException(MyException exception) {
-        ServerTracer serverTracer = ApiConfiguration.instance().getBrave().serverTracer();
-
-        if (exception.getMessage() != null) {
-            serverTracer.submitBinaryAnnotation("error", exception.getMessage());
-        } else {
-            serverTracer.submitBinaryAnnotation("error", "");
-        }
-        StackTraceElement[] stackTrace = exception.getStackTrace();
-        String stackTraceString = "";
-        if (stackTrace != null) {
-            for (StackTraceElement stackTraceElement : stackTrace) {
-                stackTraceString += stackTraceElement.toString() + " <br>" ;
-            }
-        }
-        serverTracer.submitBinaryAnnotation("stacktrace", stackTraceString);
-        serverTracer.submitBinaryAnnotation("class", exception.getClass().toString());
+        traceException(exception);
         MyError error = new MyError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
-        return new ResponseEntity<MyError>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**
+     * Return the message of the exception.
      *
-     * @param exception
-     * @return
+     * @param exception other exception.
+     * @return the message of the exception
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleAllException(MyException exception) {
+    public String handleAllException(Exception exception) {
+       traceException(exception);
+        return exception.getMessage();
+    }
+
+    private void traceException(Exception exception)
+    {
         ServerTracer serverTracer = ApiConfiguration.instance().getBrave().serverTracer();
 
         if (exception.getMessage() != null) {
@@ -70,6 +63,5 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
         }
         serverTracer.submitBinaryAnnotation("stacktrace", stackTraceString);
         serverTracer.submitBinaryAnnotation("class", exception.getClass().toString());
-        return exception.getMessage();
     }
 }

@@ -36,7 +36,6 @@ import java.util.List;
  * be configured last.
  */
 @Configuration
-// import as the interceptors are annotation with javax.inject and not automatically wired
 @Import({BraveClientHttpRequestInterceptor.class, ServletHandlerInterceptor.class})
 @PropertySource(value = "classpath:conf.properties")
 public class WebTracingConfiguration extends WebMvcConfigurerAdapter {
@@ -59,17 +58,6 @@ public class WebTracingConfiguration extends WebMvcConfigurerAdapter {
      */
     @Bean
     Reporter<Span> reporter() {
-//        if (endpointUrl != null && !endpointUrl.isEmpty()) {
-//            Sender sender = OkHttpSender.builder().endpoint(endpointUrl).build();
-//            reporter = AsyncReporter.builder(sender).messageTimeout(5L, TimeUnit.SECONDS).queuedMaxSpans(100).build();
-//            LOGGER.info("Reporting to Zipkin server correctly configured for : {}", endpointUrl);
-//        } else {
-//            LOGGER.warn("No Zipkin server url has been provided in property : architecture.servers.zipkin.url");
-//            LOGGER.info("Logging Zipkin trace info to the logs");
-//            reporter = new LoggingReporter();
-//        }
-        //        return new LoggingReporter();
-        // uncomment to actually send to zipkin!
         return AsyncReporter.builder(sender()).build();
     }
 

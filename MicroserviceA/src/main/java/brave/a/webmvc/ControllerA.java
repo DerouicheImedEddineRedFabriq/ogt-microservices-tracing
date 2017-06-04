@@ -2,6 +2,8 @@ package brave.a.webmvc;
 
 import entities.Person;
 import exception.MyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,12 +18,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Random;
 
 
-// notice there is no tracing code in this class
 @RestController
 @EnableWebMvc
 @Configuration
 @PropertySource(value = "classpath:conf.properties")
 public class ControllerA {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerA.class);
+
 
     @Value("${server.b.url}")
     private String url;
@@ -36,6 +39,7 @@ public class ControllerA {
 
     @RequestMapping(path = "/a", method = RequestMethod.GET)
     public String a() throws InterruptedException {
+        LOGGER.info("Get a...");
         Random random = new Random();
         Thread.sleep(random.nextInt(1000));
 
@@ -43,9 +47,9 @@ public class ControllerA {
     }
 
     @RequestMapping(path = "/c", method = RequestMethod.GET)
-    public String c(@RequestParam String name) throws InterruptedException, MyException {
-//        throw new MyException("test exception tracing");
-        return name;
+    public String c() throws InterruptedException, MyException {
+        LOGGER.info("Get c...");
+        throw new MyException("Test exception tracing");
     }
 
     @RequestMapping(path = "/upper",
@@ -53,7 +57,8 @@ public class ControllerA {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Person print(@RequestBody Person person) throws MyException {
+    public Person printUpper(@RequestBody Person person) throws MyException {
+        LOGGER.info("POST upper...");
         if (person == null) {
             throw new MyException("person is null");
         } else if (StringUtils.isEmpty(person.getLastName())) {

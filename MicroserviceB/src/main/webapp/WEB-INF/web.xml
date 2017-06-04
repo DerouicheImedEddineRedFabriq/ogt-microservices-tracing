@@ -16,7 +16,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <!--  Loads the application configuration and resource. Tracing configuration is optional and goes last. -->
+            <!--  Loads the application configuration and resource. -->
             <param-value>
                 brave.b.webmvc.ControllerB
                 brave.b.webmvc.WebTracingConfiguration

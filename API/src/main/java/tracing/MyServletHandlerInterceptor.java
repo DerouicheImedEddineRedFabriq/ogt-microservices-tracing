@@ -14,7 +14,7 @@ import java.util.StringJoiner;
 
 
 /**
- *
+ * Custom tracing interceptor
  *
  * @author m.mazigh
  */

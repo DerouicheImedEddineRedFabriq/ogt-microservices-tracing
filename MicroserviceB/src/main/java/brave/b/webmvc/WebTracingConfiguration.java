@@ -33,7 +33,6 @@ import java.util.List;
  * be configured last.
  */
 @Configuration
-// import as the interceptors are annotation with javax.inject and not automatically wired
 @Import({BraveClientHttpRequestInterceptor.class, ServletHandlerInterceptor.class})
 @PropertySource(value = "classpath:conf.properties")
 public class WebTracingConfiguration extends WebMvcConfigurerAdapter {
