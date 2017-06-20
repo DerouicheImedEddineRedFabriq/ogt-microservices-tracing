@@ -1,0 +1,45 @@
+version: '2'
+services:
+  microservice_a:
+    build: ./MicroserviceA
+    ports:
+     - 8085:8085
+    links:
+      - microservice_b
+      - zipkin
+#      - hawkular
+  microservice_b:
+    build: ./MicroserviceB
+    ports:
+      - 8086:8086
+    links:
+      - zipkin
+#      - hawkular
+# Run Elasticsearch instead of MySQL
+#  storage:
+#    image: openzipkin/zipkin-elasticsearch
+#    container_name: elasticsearch
+#    ports:
+#      - 9200:9200
+
+# Switch storage type to Elasticsearch
+  zipkin:
+    image: openzipkin/zipkin
+#    environment:
+#      - STORAGE_TYPE=elasticsearch
+#        # Point the zipkin at the storage backend
+#      - ES_HOSTS=http://elasticsearch:9200
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+#    depends_on:
+#      - storage
+
+# Switch storage type to Elasticsearch
+#    login=jdoe, password=password
+#  hawkular:
+#    image: jboss/hawkular-apm-server-dev
+#    ports:
+#      # Port used for the Zipkin UI and HTTP Api
+#      - 9411:8080
+
